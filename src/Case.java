@@ -16,7 +16,6 @@ public class Case extends Button{
     private boolean cache;
     private boolean bombe;
     private List<Case> voisins;
-    private List<Case> totalCase;
     private boolean inter;
     private Demineur stage;
 
@@ -34,22 +33,23 @@ public class Case extends Button{
         this.setPrefSize(size,size);
         List<Case> v = new ArrayList<>();
         this.voisins = v;
-        List<Case> v2 = new ArrayList<>();
-        this.totalCase = v2;
         this.inter = false;
 
         Case here = this;
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent e) {
                 if(e.getButton() == MouseButton.PRIMARY){
+                    if (here.estBombe()){
+                        Image image = new Image("file:img/bomb.png");
+                        ImageView view = new ImageView(image);
+                        view.setPreserveRatio(true);
+                        view.setFitWidth(30);
+                        here.setGraphic(view);
+                        stage.loseDialog();
+                    }
                     if (here.cache) {
                         here.decouvre();
-                    }
-                    else{
-                        System.out.println("Deja découverte");
-                    }
-                    if (here.estBombe()){
-                        stage.loseDialog();
+                        stage.checkWin();
                     }
                     }
                 if(e.getButton() == MouseButton.SECONDARY){
@@ -65,9 +65,6 @@ public class Case extends Button{
     public void addVoisin( Case Voisin){
         this.voisins.add(Voisin);
     }
-    public void addCarte( Case caseE){
-        this.totalCase.add(caseE);
-    }
     public boolean estBombe(){
         return this.bombe;
     }
@@ -75,28 +72,10 @@ public class Case extends Button{
 
         this.setStyle("-fx-background-color: lightgray;-fx-border-color:black;-fx-border-width: 0 0 0 0;");
         this.cache = false;
+        stage.getDecouverte().add(this);
 
         List<Color> couleur = Arrays.asList(Color.BLUE, Color.GREEN, Color.RED,Color.PURPLE, Color.PINK, Color.DARKSALMON, Color.BROWN, Color.AZURE);
 
-
-        if (this.estBombe()){
-            Image image = new Image("file:img/bomb.png");
-            ImageView view = new ImageView(image);
-            view.setPreserveRatio(true);
-            view.setFitWidth(30);
-            this.setGraphic(view);
-            for (Case elem:this.totalCase){
-                if (elem.estBombe()){
-                    Image image2 = new Image("file:img/bomb.png");
-                    ImageView view2 = new ImageView(image2);
-                    view2.setPreserveRatio(true);
-                    view2.setFitWidth(30);
-                    elem.setStyle("-fx-background-color: lightgray;-fx-border-color:black;-fx-border-width: 0 0 0 0;");
-                    elem.setGraphic(view2);
-                }
-            }
-        }
-        else{
             if (this.getNombreBombesVoisines() > 0){
                 this.setText(""+this.getNombreBombesVoisines());
                 this.setTextFill(couleur.get(this.getNombreBombesVoisines() -1));
@@ -109,7 +88,7 @@ public class Case extends Button{
                     }
                 }
             }
-        }
+
     }
     public int getNombreBombesVoisines(){
         int res = 0;
@@ -137,7 +116,6 @@ public class Case extends Button{
             this.inter = false;
             this.setGraphic(view2);
         }
-        //stage.winDialog(this);
     }
     @Override
     public String toString(){

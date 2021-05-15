@@ -1,4 +1,4 @@
 public interface DialogPopup {
-    public void winDialog(Case cas);
+    public void winDialog();
     public void loseDialog();
 }

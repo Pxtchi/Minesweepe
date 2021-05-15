@@ -7,17 +7,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file:///usr/share/openjfx/lib" />
+          <root url="file://C:/JavaFx/javafx-sdk-11.0.2/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file:///usr/share/openjfx/lib" />
+          <root url="file://C:/JavaFx/javafx-sdk-11.0.2/lib" />
         </SOURCES>
-        <jarDirectory url="file:///usr/share/openjfx/lib" recursive="false" />
-        <jarDirectory url="file:///usr/share/openjfx/lib" recursive="false" type="SOURCES" />
+        <jarDirectory url="file://C:/JavaFx/javafx-sdk-11.0.2/lib" recursive="false" />
+        <jarDirectory url="file://C:/JavaFx/javafx-sdk-11.0.2/lib" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
   </component>

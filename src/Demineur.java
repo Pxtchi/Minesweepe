@@ -23,23 +23,27 @@ import java.util.List;
 public class Demineur extends Application implements DialogPopup{
     private Stage stage;
     private List<Case> listeBombe;
-    private List<Case> listeFlagged;
+    private List<Case> listeDecouvre;
+    private List<Case> listeCaseTotal;
     @Override
     public void start(Stage stage) {
         this.stage = stage;
-        int nbCasesX = 15;
-        int nbCasesY = 15;
+        int nbCasesX = 10;
+        int nbCasesY = 10;
         int nombreBombe = 0;
+        List<Case> listeDecouvre = new ArrayList<>();
+        this.listeDecouvre=listeDecouvre;
+        List<Case> listeCaseTotal = new ArrayList<>();
+        this.listeCaseTotal=listeCaseTotal;
         List<Case> listeBombe = new ArrayList<>();
-        List<Case> listeFlagged = new ArrayList<>();
-
         BorderPane borderPane = new BorderPane();
-       GridPane gridpane = new GridPane();
+        GridPane gridpane = new GridPane();
 
        Case[][] table = new Case[nbCasesX][nbCasesY];
        for (int x = 0; x< nbCasesX;x++){
            for (int y = 0; y< nbCasesY;y++) {
                Case c = new Case(50, this);
+               listeCaseTotal.add(c);
                if (c.estBombe()){
                    listeBombe.add(c);
                    nombreBombe++;
@@ -113,6 +117,7 @@ public class Demineur extends Application implements DialogPopup{
        Scene scene = new Scene(borderPane);
        stage.setTitle("Demineur");
        stage.setScene(scene);
+        stage.getIcons().add(new Image("file:img/bomb.png"));
        stage.show();
    }
 
@@ -161,13 +166,13 @@ public class Demineur extends Application implements DialogPopup{
     }
 
     @Override
-    public void winDialog(Case cas) {
+    public void winDialog() {
         final Stage dialog = new Stage();
-        dialog.setTitle("You Win ! :(");
+        dialog.setTitle("You Win ! :)");
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         GridPane dialogVbox = new GridPane();
-        dialogVbox.add(new Text("You Win ! :("),0,1);
+        dialogVbox.add(new Text("You Win ! :)"),0,1);
         Button leave = new Button("Exit");
         Button replay = new Button("Replay");
         dialogVbox.add(replay,1,3);
@@ -189,5 +194,17 @@ public class Demineur extends Application implements DialogPopup{
         Scene dialogScene = new Scene(dialogVbox, 300, 200);
         dialog.setScene(dialogScene);
         dialog.show();
+    }
+    public List<Case> getDecouverte(){
+        return this.listeDecouvre;
+    }
+    public void checkWin(){
+        if(listeDecouvre.size()==listeCaseTotal.size()-listeBombe.size()){
+            winDialog();
+        }
+        System.out.println("listeDecouvre: "+listeDecouvre.size());
+        System.out.println("listeCaseTotal: "+listeCaseTotal.size());
+        System.out.println("listeBombe: "+listeBombe.size());
+
     }
 }
